@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🏥 SentinelMind – Healthcare Workflow Intelligence
 
 SentinelMind is a **Java Spring Boot–based healthcare operations intelligence system** that detects workflow anomalies using learned baselines and explainable rule-based reasoning.
@@ -84,3 +85,6 @@ curl -X POST "http://localhost:8080/api/workflow/ingest?department=ER&patients=6
 
 GET /api/alerts
 GET /dashboard
+=======
+# SentinelMind
+>>>>>>> a512681509256b985da2cd0986bf4047b143578f
