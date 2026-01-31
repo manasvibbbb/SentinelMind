@@ -1,0 +1,132 @@
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: #F4E3B2;
+    color: #310E10;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: #45462A;
+    padding: 16px 30px;
+    display: flex;
+    gap: 25px;
+}
+
+.navbar a {
+    color: #F4E3B2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.navbar a.active,
+.navbar a:hover {
+    color: #FFFFFF;
+    border-bottom: 2px solid #74070E;
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* HERO */
+.hero h1 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #74070E;
+    font-weight: 600;
+}
+
+.description {
+    margin-top: 12px;
+    max-width: 800px;
+    line-height: 1.6;
+}
+
+/* GRID */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* FEATURES */
+.feature h3 {
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: #45462A;
+    line-height: 1.5;
+}
+
+.link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #74070E;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* ALERTS */
+.alert-card {
+    border-left: 6px solid #947268;
+}
+
+.alert-card.HIGH {
+    border-left-color: #74070E;
+}
+
+.alert-card.MEDIUM {
+    border-left-color: #45462A;
+}
+
+.alert-card.LOW {
+    border-left-color: #27AE60;
+}
+
+/* BUTTON */
+.btn {
+    background: #74070E;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #310E10;
+}
+
+/* TOAST */
+#toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #74070E;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    z-index: 9999;
+}

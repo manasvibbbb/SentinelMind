@@ -1,0 +1,82 @@
+<link rel="stylesheet" href="/css/main.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Baseline Confidence – SentinelMind</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: #2c3e50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .navbar a {
+            color: white;
+            margin-right: 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+
+        .HIGH { color: green; font-weight: bold; }
+        .MEDIUM { color: orange; font-weight: bold; }
+        .LOW { color: red; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/risk-trends">Risk Trends</a>
+    <a href="/confidence">Baseline Confidence</a>
+    <a href="/alerts">Alerts</a>
+</div>
+
+<h1>🧠 Baseline Confidence Analysis</h1>
+<p>
+    Confidence indicates how reliable SentinelMind’s learned baselines are,
+    based on the amount of historical workflow data available.
+</p>
+
+<div class="card" th:each="c : ${confidenceList}">
+    <h3 th:text="'Department: ' + ${c.department}"></h3>
+
+    <p>
+        Confidence Level:
+        <span th:text="${c.level}" th:class="${c.level}">MEDIUM</span>
+    </p>
+
+    <p>
+        Records Used:
+        <strong th:text="${c.records}">0</strong>
+    </p>
+
+    <p th:text="${c.explanation}"></p>
+
+    <a th:href="@{'/department/' + ${c.department}}">
+        View Department →
+    </a>
+</div>
+
+</body>
+</html>

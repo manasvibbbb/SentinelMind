@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="/css/main.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recommendations – SentinelMind</title>
+
+    <style>
+        body { font-family: Arial; background:#f4f6f8; padding:20px; }
+
+        .navbar {
+            background:#2c3e50;
+            padding:15px;
+            border-radius:8px;
+            margin-bottom:30px;
+        }
+
+        .navbar a {
+            color:white;
+            margin-right:25px;
+            font-weight:bold;
+            text-decoration:none;
+        }
+
+        h1 { color:#2c3e50; }
+
+        .card {
+            background:white;
+            padding:20px;
+            border-radius:8px;
+            margin-bottom:20px;
+            border-left:6px solid #e74c3c;
+        }
+
+        .HIGH { border-left-color:red; }
+        .MEDIUM { border-left-color:orange; }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/risk-trends">Risk Trends</a>
+    <a href="/recommendations">Recommendations</a>
+    <a href="/alerts">Alerts</a>
+</div>
+
+<h1>🧠 Smart Recommendations</h1>
+<p>
+    Actionable intelligence generated from detected workflow anomalies.
+</p>
+
+<div class="card" th:each="a : ${alerts}" th:class="${a.riskLevel}">
+    <h3 th:text="${a.department.name}"></h3>
+    <p><strong>Risk:</strong> <span th:text="${a.riskLevel}"></span></p>
+    <p><strong>Reason:</strong> <span th:text="${a.message}"></span></p>
+    <p><strong>Suggested Action:</strong></p>
+    <p th:text="${a.recommendation}"></p>
+
+    <a th:href="@{'/department/' + ${a.department.name}}">
+        View Department →
+    </a>
+</div>
+
+</body>
+</html>

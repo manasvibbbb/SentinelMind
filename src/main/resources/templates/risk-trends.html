@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="/css/main.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Risk Trends – SentinelMind</title>
+
+    <style>
+        body { font-family: Arial; background:#f4f6f8; padding:20px; }
+
+        .navbar {
+            background:#2c3e50;
+            padding:15px;
+            border-radius:8px;
+            margin-bottom:30px;
+        }
+
+        .navbar a {
+            color:white;
+            margin-right:25px;
+            font-weight:bold;
+            text-decoration:none;
+        }
+
+        h1 { color:#2c3e50; }
+
+        .card {
+            background:white;
+            padding:20px;
+            border-radius:8px;
+            margin-bottom:20px;
+        }
+
+        .INCREASING { color:red; font-weight:bold; }
+        .IMPROVING { color:green; font-weight:bold; }
+        .STABLE { color:orange; font-weight:bold; }
+        .INSUFFICIENT\ DATA { color:gray; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/risk-trends">Risk Trends</a>
+    <a href="/recommendations">Recommendations</a>
+    <a href="/alerts">Alerts</a>
+</div>
+
+<h1>📈 Risk Trend Analysis</h1>
+<p>
+    Directional analysis of operational risk based on recent workflow behavior.
+</p>
+
+<div class="card" th:each="t : ${trends}">
+    <h3 th:text="'Department: ' + ${t.department}"></h3>
+    <p>
+        Risk Trend:
+        <span th:text="${t.trend}" th:class="${t.trend}">STABLE</span>
+    </p>
+
+    <a th:href="@{'/department/' + ${t.department}}">
+        View Department Details →
+    </a>
+</div>
+
+</body>
+</html>

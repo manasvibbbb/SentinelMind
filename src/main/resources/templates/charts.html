@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="/css/main.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AI Charts – SentinelMind</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: #2c3e50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .navbar a {
+            color: white;
+            margin-right: 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        select {
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/risk-trends">Risk Trends</a>
+    <a href="/charts">Charts</a>
+    <a href="/confidence">Confidence</a>
+    <a href="/alerts">Alerts</a>
+</div>
+
+<h1>📊 AI Trend Charts – <span th:text="${department}">ER</span></h1>
+
+<form method="get" action="/charts">
+    <label>Select Department:</label>
+    <select name="department" onchange="this.form.submit()">
+        <option value="ER" th:selected="${department == 'ER'}">ER</option>
+        <option value="ICU" th:selected="${department == 'ICU'}">ICU</option>
+        <option value="OPD" th:selected="${department == 'OPD'}">OPD</option>
+    </select>
+</form>
+
+<div class="chart-box">
+    <canvas id="patientsChart"></canvas>
+</div>
+
+<div class="chart-box">
+    <canvas id="responseChart"></canvas>
+</div>
+
+<div class="chart-box">
+    <canvas id="staffChart"></canvas>
+</div>
+
+<script th:inline="javascript">
+    const records = [[${records}]];
+
+    const labels = records.map(r => r.timestamp);
+    const patients = records.map(r => r.patientCount);
+    const response = records.map(r => r.avgResponseTime);
+    const staff = records.map(r => r.staffOnDuty);
+
+    new Chart(document.getElementById("patientsChart"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Patient Count",
+                data: patients,
+                borderColor: "blue",
+                fill: false
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("responseChart"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Avg Response Time (min)",
+                data: response,
+                borderColor: "red",
+                fill: false
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("staffChart"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Staff on Duty",
+                data: staff,
+                borderColor: "green",
+                fill: false
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

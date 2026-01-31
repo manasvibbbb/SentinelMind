@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SentinelMind – Operations Dashboard</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a class="active" href="/dashboard">Dashboard</a>
+    <a href="/risk-trends">Risk Trends</a>
+    <a href="/recommendations">Recommendations</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/charts">Charts</a>
+</div>
+
+<div class="container">
+
+    <!-- HERO / OVERVIEW -->
+    <div class="card hero">
+        <h1>🧠 SentinelMind</h1>
+        <p class="subtitle">
+            AI-powered hospital workflow intelligence system.
+        </p>
+        <p class="description">
+            SentinelMind continuously analyzes operational signals such as patient inflow,
+            response delays, and staffing levels to detect risks early, explain anomalies,
+            and support real-time clinical decision-making.
+        </p>
+    </div>
+
+    <!-- KEY CAPABILITIES -->
+    <div class="grid-3">
+
+        <div class="card feature">
+            <h3>📈 Risk Trend Intelligence</h3>
+            <p>
+                Directional analysis of operational risk across departments
+                using recent workflow patterns.
+            </p>
+            <a href="/risk-trends" class="link">View Risk Trends →</a>
+        </div>
+
+        <div class="card feature">
+            <h3>🚨 Real-Time Alerts</h3>
+            <p>
+                Immediate alerts for high-risk situations with
+                explainable reasoning and action guidance.
+            </p>
+            <a href="/alerts" class="link">View Alerts →</a>
+        </div>
+
+        <div class="card feature">
+            <h3>🩺 Smart Recommendations</h3>
+            <p>
+                AI-generated operational recommendations to
+                assist doctors and administrators in critical moments.
+            </p>
+            <a href="/recommendations" class="link">View Recommendations →</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

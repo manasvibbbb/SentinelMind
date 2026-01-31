@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Monitor – SentinelMind</title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- WebSocket libs -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/department/ER">Department</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/charts">Charts</a>
+</div>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="card">
+        <h1>🏥 Emergency Room – Live Monitor</h1>
+        <p>
+            Real-time operational intelligence for doctors.
+            High-risk workflow anomalies trigger immediate alerts.
+        </p>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast">
+        🚨 HIGH RISK ALERT — Immediate Action Required
+        <br><br>
+        <button class="btn" onclick="ackToast()">Acknowledge</button>
+    </div>
+
+    <!-- ALERT LIST -->
+    <div id="alerts">
+        <div th:each="alert : ${alerts}"
+             th:class="'card alert-card ' + ${alert.riskLevel}">
+
+            <h3 th:text="${alert.riskLevel} + ' RISK'"></h3>
+
+            <p th:text="${alert.message}"></p>
+
+            <p class="recommendation"
+               th:text="'Recommendation: ' + ${alert.recommendation}">
+            </p>
+
+            <button class="btn">Acknowledge</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ALERT SOUND -->
+<audio id="alertSound" src="/sounds/alert.mp3"></audio>
+
+<script>
+    let socket = new SockJS('/ws');
+    let stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function () {
+        stompClient.subscribe('/topic/alerts', function (msg) {
+            const alert = JSON.parse(msg.body);
+
+            if (alert.riskLevel === "HIGH") {
+                showToast();
+                playSound();
+                addAlertCard(alert);
+            }
+        });
+    });
+
+    function showToast() {
+        const toast = document.getElementById("toast");
+        toast.style.display = "block";
+    }
+
+    function ackToast() {
+        document.getElementById("toast").style.display = "none";
+    }
+
+    function playSound() {
+        const audio = document.getElementById("alertSound");
+        audio.currentTime = 0;
+        audio.play();
+    }
+
+    function addAlertCard(alert) {
+        const container = document.getElementById("alerts");
+
+        const card = document.createElement("div");
+        card.className = "card alert-card HIGH";
+
+        card.innerHTML = `
+            <h3>HIGH RISK</h3>
+            <p>${alert.message}</p>
+            <p class="recommendation">
+                Recommendation: ${alert.recommendation}
+            </p>
+            <button class="btn">Acknowledge</button>
+        `;
+
+        container.prepend(card);
+    }
+</script>
+
+</body>
+</html>

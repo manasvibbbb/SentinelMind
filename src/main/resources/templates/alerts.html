@@ -1,0 +1,195 @@
+<link rel="stylesheet" href="/css/main.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Alerts – SentinelMind</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .navbar a {
+            color: white;
+            margin-right: 30px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* SUMMARY */
+        .summary {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 220px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        /* FILTERS */
+        .filters {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        select {
+            padding: 8px;
+            margin-right: 15px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+
+        .HIGH { color: red; font-weight: bold; }
+        .MEDIUM { color: orange; font-weight: bold; }
+        .LOW { color: green; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/baselines">Baselines</a>
+</div>
+
+<h1>🚨 Alert Intelligence Center</h1>
+<p class="subtitle">
+    Live monitoring of hospital workflow anomalies with explainable reasoning.
+</p>
+
+<div class="summary">
+    <div class="box">
+        <strong>Total Alerts</strong><br>
+        <span th:text="${alerts.size()}">0</span>
+    </div>
+    <div class="box">
+        <strong>High Risk Alerts</strong><br>
+        <span th:text="${alerts.?[riskLevel=='HIGH'].size()}">0</span>
+    </div>
+</div>
+
+<div class="filters">
+    <label>Risk:</label>
+    <select id="riskFilter" onchange="filterTable()">
+        <option value="">All</option>
+        <option value="HIGH">HIGH</option>
+        <option value="MEDIUM">MEDIUM</option>
+        <option value="LOW">LOW</option>
+    </select>
+
+    <label>Department:</label>
+    <select id="deptFilter" onchange="filterTable()">
+        <option value="">All</option>
+        <option value="ER">ER</option>
+    </select>
+</div>
+
+<table id="alertsTable">
+    <tr>
+        <th>ID</th>
+        <th>Department</th>
+        <th>Risk</th>
+        <th>Message</th>
+        <th>Time</th>
+    </tr>
+
+    <tr th:each="alert : ${alerts}">
+        <td th:text="${alert.id}"></td>
+        <td>
+            <a th:href="@{'/department/' + ${alert.department.name}}"
+               th:text="${alert.department.name}"></a>
+        </td>
+        <td th:text="${alert.riskLevel}" th:class="${alert.riskLevel}"></td>
+        <td th:text="${alert.message}"></td>
+        <td th:text="${alert.createdAt}"></td>
+    </tr>
+</table>
+
+<script>
+    function filterTable() {
+        const risk = document.getElementById("riskFilter").value;
+        const dept = document.getElementById("deptFilter").value;
+        const rows = document.querySelectorAll("#alertsTable tr");
+
+        rows.forEach((row, i) => {
+            if (i === 0) return;
+            const r = row.cells[2].innerText;
+            const d = row.cells[1].innerText;
+            row.style.display =
+                (risk === "" || r === risk) &&
+                (dept === "" || d === dept)
+                    ? "" : "none";
+        });
+    }
+
+    async function refreshAlerts() {
+        const res = await fetch("/api/alerts");
+        const data = await res.json();
+        const table = document.getElementById("alertsTable");
+
+        table.innerHTML = `
+            <tr>
+                <th>ID</th><th>Department</th><th>Risk</th><th>Message</th><th>Time</th>
+            </tr>`;
+
+        data.forEach(a => {
+            table.innerHTML += `
+                <tr>
+                    <td>${a.id}</td>
+                    <td><a href="/department/${a.department.name}">${a.department.name}</a></td>
+                    <td class="${a.riskLevel}">${a.riskLevel}</td>
+                    <td>${a.message}</td>
+                    <td>${a.createdAt}</td>
+                </tr>`;
+        });
+    }
+
+    setInterval(refreshAlerts, 10000);
+</script>
+
+</body>
+</html>
