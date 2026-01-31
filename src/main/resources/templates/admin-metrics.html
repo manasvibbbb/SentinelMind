@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Metrics – SentinelMind</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: body}"></div>
+
+<div class="container">
+
+    <div class="card header-card">
+        <h1>🧑‍💼 Admin Metrics Input</h1>
+        <p class="description">
+            Enter live operational metrics to evaluate risk and generate alerts.
+        </p>
+    </div>
+
+    <div class="card">
+
+        <form method="post" action="/admin/metrics">
+
+            <label>Department</label>
+            <select name="department" required>
+                <option value="ER">Emergency (ER)</option>
+                <option value="ICU">ICU</option>
+                <option value="OPD">OPD</option>
+            </select>
+
+            <br><br>
+
+            <label>Patient Count</label>
+            <input type="number" name="patientCount" min="0" required>
+
+            <br><br>
+
+            <label>Staff On Duty</label>
+            <input type="number" name="staffOnDuty" min="0" required>
+
+            <br><br>
+
+            <label>Average Response Time (minutes)</label>
+            <input type="number" name="avgResponseTime" min="0" required>
+
+            <br><br>
+
+            <button type="submit" class="btn btn-primary">
+                🚨 Evaluate Risk
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -35,10 +35,28 @@ public class Alert {
         this.recommendation = recommendation;
     }
 
+    // ✅ GETTERS
     public Long getId() { return id; }
     public Department getDepartment() { return department; }
     public String getRiskLevel() { return riskLevel; }
     public String getMessage() { return message; }
     public String getRecommendation() { return recommendation; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    // ✅ SETTERS (THIS FIXES YOUR ERRORS)
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public void setRiskLevel(String riskLevel) {
+        this.riskLevel = riskLevel;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setRecommendation(String recommendation) {
+        this.recommendation = recommendation;
+    }
 }

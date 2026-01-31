@@ -13,13 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig {
 
-    // 🔐 PASSWORD ENCODER (REQUIRED)
+    // 🔐 PASSWORD ENCODER
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 👤 USERS (ADD YOUR CODE HERE ✅)
+    // 👤 DEMO USERS
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder) {
         return new InMemoryUserDetailsManager(
@@ -41,16 +41,28 @@ public class SecurityConfig {
     // 🔒 SECURITY RULES
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
+                // Disable CSRF for form demo + POST metrics
+                .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
+                        // Public
                         .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
+
+                        // ADMIN ONLY
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // Any logged-in user
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()

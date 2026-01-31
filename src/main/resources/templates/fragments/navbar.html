@@ -9,6 +9,11 @@
         <a th:classappend="${activePage=='dashboard'} ? 'active'"
            href="/dashboard">Dashboard</a>
 
+        <a href="/admin/metrics"
+           th:classappend="${activePage == 'admin'} ? 'active'">
+            Admin Metrics
+        </a>
+
         <a th:classappend="${activePage=='risk-trends'} ? 'active'"
            href="/risk-trends">Risk Trends</a>
 
