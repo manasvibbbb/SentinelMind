@@ -52,6 +52,7 @@ public class DepartmentController {
         model.addAttribute("baseline", baseline);
         model.addAttribute("alerts", alerts);
         model.addAttribute("trend", trend);
+        model.addAttribute("activePage", "department");
 
         return "department";
     }

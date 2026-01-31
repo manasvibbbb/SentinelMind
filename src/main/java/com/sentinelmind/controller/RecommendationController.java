@@ -27,6 +27,7 @@ public class RecommendationController {
                         .toList();
 
         model.addAttribute("alerts", alerts);
+        model.addAttribute("activePage", "recommendations");
         return "recommendations";
     }
 }

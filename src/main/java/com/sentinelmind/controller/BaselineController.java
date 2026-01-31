@@ -21,7 +21,7 @@ public class BaselineController {
                 "baselines",
                 baselineProfileRepository.findAll()
         );
-
+        model.addAttribute("activePage", "baselines");
         return "baselines";
     }
 }

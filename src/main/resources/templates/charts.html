@@ -1,87 +1,60 @@
-<link rel="stylesheet" href="/css/main.css">
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>AI Charts – SentinelMind</title>
 
+    <link rel="stylesheet" href="/css/main.css">
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            padding: 20px;
-        }
-
-        .navbar {
-            background: #2c3e50;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .navbar a {
-            color: white;
-            margin-right: 25px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        .chart-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        select {
-            padding: 8px;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<div class="navbar">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/risk-trends">Risk Trends</a>
-    <a href="/charts">Charts</a>
-    <a href="/confidence">Confidence</a>
-    <a href="/alerts">Alerts</a>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="card header-card">
+        <h1>📊 AI Trend Charts – <span th:text="${department}">ER</span></h1>
+        <p class="description">
+            Visualized operational metrics tracked over time to support
+            explainable, data-driven hospital decisions.
+        </p>
+    </div>
+
+    <!-- DEPARTMENT SELECT -->
+    <div class="card">
+        <form method="get" action="/charts">
+            <label><strong>Select Department:</strong></label>
+            <select name="department" onchange="this.form.submit()">
+                <option value="ER" th:selected="${department == 'ER'}">ER</option>
+                <option value="ICU" th:selected="${department == 'ICU'}">ICU</option>
+                <option value="OPD" th:selected="${department == 'OPD'}">OPD</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="card chart-box">
+        <canvas id="patientsChart"></canvas>
+    </div>
+
+    <div class="card chart-box">
+        <canvas id="responseChart"></canvas>
+    </div>
+
+    <div class="card chart-box">
+        <canvas id="staffChart"></canvas>
+    </div>
+
 </div>
 
-<h1>📊 AI Trend Charts – <span th:text="${department}">ER</span></h1>
-
-<form method="get" action="/charts">
-    <label>Select Department:</label>
-    <select name="department" onchange="this.form.submit()">
-        <option value="ER" th:selected="${department == 'ER'}">ER</option>
-        <option value="ICU" th:selected="${department == 'ICU'}">ICU</option>
-        <option value="OPD" th:selected="${department == 'OPD'}">OPD</option>
-    </select>
-</form>
-
-<div class="chart-box">
-    <canvas id="patientsChart"></canvas>
-</div>
-
-<div class="chart-box">
-    <canvas id="responseChart"></canvas>
-</div>
-
-<div class="chart-box">
-    <canvas id="staffChart"></canvas>
-</div>
-
+<!-- DATA + CHART LOGIC -->
 <script th:inline="javascript">
+    /* Thymeleaf injects Java List as JS array */
     const records = [[${records}]];
 
     const labels = records.map(r => r.timestamp);
@@ -92,11 +65,12 @@
     new Chart(document.getElementById("patientsChart"), {
         type: "line",
         data: {
-            labels: labels,
+            labels,
             datasets: [{
                 label: "Patient Count",
                 data: patients,
-                borderColor: "blue",
+                borderColor: "#1F8A70",
+                tension: 0.3,
                 fill: false
             }]
         }
@@ -105,11 +79,12 @@
     new Chart(document.getElementById("responseChart"), {
         type: "line",
         data: {
-            labels: labels,
+            labels,
             datasets: [{
                 label: "Avg Response Time (min)",
                 data: response,
-                borderColor: "red",
+                borderColor: "#C0392B",
+                tension: 0.3,
                 fill: false
             }]
         }
@@ -118,11 +93,12 @@
     new Chart(document.getElementById("staffChart"), {
         type: "line",
         data: {
-            labels: labels,
+            labels,
             datasets: [{
-                label: "Staff on Duty",
+                label: "Staff On Duty",
                 data: staff,
-                borderColor: "green",
+                borderColor: "#0F4C81",
+                tension: 0.3,
                 fill: false
             }]
         }

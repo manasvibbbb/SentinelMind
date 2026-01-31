@@ -1,133 +1,71 @@
-<link rel="stylesheet" href="/css/main.css">
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Baselines – SentinelMind</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            padding: 20px;
-        }
-
-        /* NAVBAR */
-        .navbar {
-            background: #2c3e50;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .navbar a {
-            color: white;
-            margin-right: 25px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        h1 {
-            color: #2c3e50;
-        }
-
-        .subtitle {
-            color: #555;
-            margin-bottom: 25px;
-        }
-
-        /* BASELINE CARDS */
-        .baseline-grid {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .baseline-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .baseline-card h3 {
-            margin-top: 0;
-            color: #34495e;
-        }
-
-        .metric {
-            margin: 8px 0;
-        }
-
-        .label {
-            font-weight: bold;
-        }
-
-        .note {
-            margin-top: 30px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<div class="navbar">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/alerts">Alerts</a>
-    <a href="/baseline">Baselines</a>
-    <a th:href="@{'/department/' + ${baseline.department.name}}">
-        View Live Department →
-    </a>
+<div th:replace="fragments/navbar :: body"></div>
+<div class="container">
 
-</div>
-
-<h1>📊 Baseline Profiles</h1>
-<p class="subtitle">
-    Learned normal operational behavior for each hospital department.
-</p>
-
-<!-- BASELINE CARDS -->
-<div class="baseline-grid">
-
-    <div class="baseline-card" th:each="baseline : ${baselines}">
-        <h3 th:text="${baseline.department.name}">Department</h3>
-
-        <div class="metric">
-            <span class="label">Avg Patients:</span>
-            <span th:text="${baseline.avgPatients}"></span>
-        </div>
-
-        <div class="metric">
-            <span class="label">Avg Response Time (min):</span>
-            <span th:text="${baseline.avgResponseTime}"></span>
-        </div>
-
-        <div class="metric">
-            <span class="label">Avg Staff:</span>
-            <span th:text="${baseline.avgStaff}"></span>
-        </div>
-
-        <div class="metric">
-            <span class="label">Last Updated:</span>
-            <span th:text="${baseline.lastUpdated}"></span>
-        </div>
+    <!-- HEADER -->
+    <div class="card header-card">
+        <h1>📊 Baseline Profiles</h1>
+        <p class="description">
+            Learned representations of normal operational behavior for each hospital department.
+        </p>
     </div>
 
-</div>
+    <!-- BASELINE GRID -->
+    <div class="grid-3">
 
-<!-- EXPLANATION -->
-<div class="note">
-    <h3>🧠 How Baselines Are Used</h3>
-    <p>
-        SentinelMind continuously updates baseline profiles using historical workflow data.
-        These baselines represent normal operational behavior for each department.
-        When real-time data deviates significantly from these learned patterns,
-        the system generates explainable alerts to help hospital staff respond early.
-    </p>
+        <div class="card baseline-card" th:each="baseline : ${baselines}">
+            <h3 th:text="${baseline.department.name}">Department</h3>
+
+            <p>
+                <strong>Avg Patients:</strong>
+                <span th:text="${baseline.avgPatients}"></span>
+            </p>
+
+            <p>
+                <strong>Avg Response Time:</strong>
+                <span th:text="${baseline.avgResponseTime}"></span> min
+            </p>
+
+            <p>
+                <strong>Avg Staff On Duty:</strong>
+                <span th:text="${baseline.avgStaff}"></span>
+            </p>
+
+            <p class="muted">
+                Last Updated:
+                <span th:text="${baseline.lastUpdated}"></span>
+            </p>
+
+            <a class="link"
+               th:href="@{'/department/' + ${baseline.department.name}}">
+                View Live Department →
+            </a>
+        </div>
+
+    </div>
+
+    <!-- EXPLANATION -->
+    <div class="card info-card">
+        <h3>🧠 How Baselines Power SentinelMind</h3>
+        <p>
+            SentinelMind continuously learns baseline profiles from historical workflow data.
+            These profiles define what <em>normal</em> looks like for each department.
+        </p>
+        <p>
+            When real-time metrics deviate significantly from these baselines,
+            the system generates explainable alerts and operational recommendations.
+        </p>
+    </div>
+
 </div>
 
 </body>

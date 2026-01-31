@@ -1,67 +1,67 @@
-<link rel="stylesheet" href="/css/main.css">
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Risk Trends – SentinelMind</title>
-
-    <style>
-        body { font-family: Arial; background:#f4f6f8; padding:20px; }
-
-        .navbar {
-            background:#2c3e50;
-            padding:15px;
-            border-radius:8px;
-            margin-bottom:30px;
-        }
-
-        .navbar a {
-            color:white;
-            margin-right:25px;
-            font-weight:bold;
-            text-decoration:none;
-        }
-
-        h1 { color:#2c3e50; }
-
-        .card {
-            background:white;
-            padding:20px;
-            border-radius:8px;
-            margin-bottom:20px;
-        }
-
-        .INCREASING { color:red; font-weight:bold; }
-        .IMPROVING { color:green; font-weight:bold; }
-        .STABLE { color:orange; font-weight:bold; }
-        .INSUFFICIENT\ DATA { color:gray; }
-
-    </style>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body>
 
-<div class="navbar">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/risk-trends">Risk Trends</a>
-    <a href="/recommendations">Recommendations</a>
-    <a href="/alerts">Alerts</a>
-</div>
+<!-- NAVBAR -->
+<div th:replace="fragments/navbar :: body"></div>
 
-<h1>📈 Risk Trend Analysis</h1>
-<p>
-    Directional analysis of operational risk based on recent workflow behavior.
-</p>
+<div class="container">
 
-<div class="card" th:each="t : ${trends}">
-    <h3 th:text="'Department: ' + ${t.department}"></h3>
-    <p>
-        Risk Trend:
-        <span th:text="${t.trend}" th:class="${t.trend}">STABLE</span>
-    </p>
+    <!-- PAGE HEADER -->
+    <div class="card header-card">
+        <h1>📈 Departmental Risk Trends</h1>
+        <p class="subtitle">
+            Directional intelligence indicating whether operational risk
+            is increasing, stable, or improving across departments.
+        </p>
+        <p class="description">
+            Trends are computed using recent workflow data relative to learned
+            baseline behavior and detected anomalies.
+        </p>
+    </div>
 
-    <a th:href="@{'/department/' + ${t.department}}">
-        View Department Details →
-    </a>
+    <!-- LEGEND -->
+    <div class="card legend-card">
+        <strong>Legend:</strong>
+        <span class="trend-badge INCREASING">▲ Increasing Risk</span>
+        <span class="trend-badge STABLE">● Stable</span>
+        <span class="trend-badge IMPROVING">▼ Improving</span>
+    </div>
+
+    <!-- TRENDS -->
+    <div class="grid-1">
+
+        <div class="card trend-card" th:each="t : ${trends}">
+
+            <div class="trend-header">
+                <h3 th:text="${t.department}">Emergency</h3>
+
+                <span class="trend-badge"
+                      th:text="${t.trend}"
+                      th:classappend="' ' + ${t.trend}">
+                    STABLE
+                </span>
+            </div>
+
+            <p class="trend-desc">
+                Reflects how current operational conditions compare to
+                historical norms for this department.
+            </p>
+
+            <a th:href="@{'/department/' + ${t.department}}"
+               class="link">
+                View Live Department Monitor →
+            </a>
+
+        </div>
+
+    </div>
+
 </div>
 
 </body>

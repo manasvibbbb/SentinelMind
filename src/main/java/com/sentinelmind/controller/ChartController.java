@@ -36,6 +36,7 @@ public class ChartController {
 
         model.addAttribute("records", records);
         model.addAttribute("department", department);
+        model.addAttribute("activePage", "charts");
 
         return "charts";
     }

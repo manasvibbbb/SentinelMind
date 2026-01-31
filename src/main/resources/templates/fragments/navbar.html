@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="navbar">
+
+    <!-- LEFT: CORE NAV -->
+    <div class="nav-left">
+        <a th:classappend="${activePage=='dashboard'} ? 'active'"
+           href="/dashboard">Dashboard</a>
+
+        <a th:classappend="${activePage=='risk-trends'} ? 'active'"
+           href="/risk-trends">Risk Trends</a>
+
+        <a th:classappend="${activePage=='alerts'} ? 'active'"
+           href="/alerts">Alerts</a>
+
+        <a th:classappend="${activePage=='department'} ? 'active'"
+           href="/department/ER">Department</a>
+
+        <a th:classappend="${activePage=='charts'} ? 'active'"
+           href="/charts">Charts</a>
+
+        <a th:classappend="${activePage=='baselines'} ? 'active'"
+           href="/baselines">Baselines</a>
+
+        <a th:classappend="${activePage=='confidence'} ? 'active'"
+           href="/confidence">Confidence</a>
+
+        <a th:classappend="${activePage=='recommendations'} ? 'active'"
+           href="/recommendations">Recommendations</a>
+    </div>
+
+    <!-- RIGHT: SESSION -->
+    <div class="nav-right">
+        <a class="logout" href="/logout">Logout</a>
+    </div>
+
+</div>
+
+</body>
+</html>

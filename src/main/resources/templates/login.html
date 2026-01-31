@@ -5,7 +5,7 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
             background: linear-gradient(135deg, #0F4C81, #1F8A70);
             height: 100vh;
             display: flex;
@@ -15,69 +15,86 @@
         }
 
         .login-card {
-            background: white;
-            padding: 30px;
-            width: 360px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #ffffff;
+            padding: 32px;
+            width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            text-align: center;
         }
 
         h2 {
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             color: #0F4C81;
         }
 
-        p.subtitle {
+        .subtitle {
             font-size: 14px;
-            color: #555;
-            margin-bottom: 20px;
+            color: #666;
+            margin-bottom: 22px;
         }
 
         label {
-            font-weight: bold;
+            display: block;
+            text-align: left;
+            font-weight: 600;
             font-size: 14px;
+            margin-bottom: 4px;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 5px;
+            margin-bottom: 16px;
+            border-radius: 6px;
             border: 1px solid #ccc;
+            font-size: 14px;
         }
 
         button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: #0F4C81;
             border: none;
             color: white;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            font-weight: 600;
         }
 
         button:hover {
             background: #09375F;
         }
 
-        .demo-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #F4F7FB;
+        .error {
+            background: #FDECEA;
+            color: #C0392B;
+            padding: 10px;
             border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .demo-box {
+            margin-top: 22px;
+            padding: 14px;
+            background: #F4F7FB;
+            border-radius: 8px;
             font-size: 13px;
+            text-align: left;
         }
 
         .demo-box strong {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            color: #333;
         }
 
-        .error {
-            color: #C0392B;
-            margin-bottom: 10px;
+        .footer {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #777;
         }
     </style>
 </head>
@@ -87,27 +104,34 @@
 <div class="login-card">
 
     <h2>SentinelMind</h2>
-    <p class="subtitle">Healthcare Workflow Intelligence System</p>
+    <div class="subtitle">
+        AI-Powered Hospital Workflow Intelligence
+    </div>
 
+    <!-- Login error -->
     <div th:if="${param.error}" class="error">
-        Invalid credentials. Please try demo accounts below.
+        Invalid credentials. Please use the demo accounts below.
     </div>
 
     <form th:action="@{/login}" method="post">
-        <label>Username</label>
-        <input type="text" name="username" required autofocus>
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" required autofocus>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required>
 
-        <button type="submit">Login</button>
+        <button type="submit">Sign In</button>
     </form>
 
     <div class="demo-box">
         <strong>Demo Credentials</strong>
-        Admin → admin / admin123 <br>
-        Doctor → doctor / doctor123 <br>
-        Analyst → analyst / analyst123
+        👨‍⚕️ Doctor → <b>doctor / doctor123</b><br>
+        🛠 Admin → <b>admin / admin123</b><br>
+        📊 Analyst → <b>analyst / analyst123</b>
+    </div>
+
+    <div class="footer">
+        © SentinelMind · Secure Clinical Intelligence
     </div>
 
 </div>

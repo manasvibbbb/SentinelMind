@@ -6,7 +6,7 @@
     <!-- Global CSS -->
     <link rel="stylesheet" href="/css/main.css">
 
-    <!-- WebSocket libs -->
+    <!-- WebSocket -->
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
@@ -14,59 +14,59 @@
 <body>
 
 <!-- NAVBAR -->
-<div class="navbar">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/department/ER">Department</a>
-    <a href="/alerts">Alerts</a>
-    <a href="/charts">Charts</a>
-</div>
+<div th:replace="fragments/navbar :: body"></div>
 
 <div class="container">
 
     <!-- HEADER -->
-    <div class="card">
-        <h1>🏥 Emergency Room – Live Monitor</h1>
-        <p>
+    <div class="card header-card">
+        <h1>🏥 Emergency Room — Live Monitor</h1>
+        <p class="description">
             Real-time operational intelligence for doctors.
-            High-risk workflow anomalies trigger immediate alerts.
+            High-risk workflow anomalies trigger immediate alerts
+            with AI-generated explanations and recommendations.
         </p>
     </div>
 
-    <!-- TOAST -->
+    <!-- LIVE TOAST -->
     <div id="toast">
-        🚨 HIGH RISK ALERT — Immediate Action Required
+        🚨 <strong>HIGH RISK ALERT</strong><br>
+        Immediate clinical attention required.
         <br><br>
-        <button class="btn" onclick="ackToast()">Acknowledge</button>
+        <button class="btn btn-primary" onclick="ackToast()">Acknowledge</button>
     </div>
 
-    <!-- ALERT LIST -->
+    <!-- ALERT STREAM -->
     <div id="alerts">
+
         <div th:each="alert : ${alerts}"
              th:class="'card alert-card ' + ${alert.riskLevel}">
 
-            <h3 th:text="${alert.riskLevel} + ' RISK'"></h3>
+            <div class="risk" th:text="${alert.riskLevel} + ' RISK'"></div>
 
             <p th:text="${alert.message}"></p>
 
-            <p class="recommendation"
-               th:text="'Recommendation: ' + ${alert.recommendation}">
+            <p class="recommendation">
+                <strong>Recommendation:</strong>
+                <span th:text="${alert.recommendation}"></span>
             </p>
 
-            <button class="btn">Acknowledge</button>
+            <button class="btn btn-primary">Acknowledge</button>
         </div>
+
     </div>
 
 </div>
 
 <!-- ALERT SOUND -->
-<audio id="alertSound" src="/sounds/alert.mp3"></audio>
+<audio id="alertSound" src="/sounds/alert.mp3" preload="auto"></audio>
 
 <script>
-    let socket = new SockJS('/ws');
-    let stompClient = Stomp.over(socket);
+    const socket = new SockJS('/ws');
+    const stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, function () {
-        stompClient.subscribe('/topic/alerts', function (msg) {
+    stompClient.connect({}, () => {
+        stompClient.subscribe('/topic/alerts', (msg) => {
             const alert = JSON.parse(msg.body);
 
             if (alert.riskLevel === "HIGH") {
@@ -99,12 +99,12 @@
         card.className = "card alert-card HIGH";
 
         card.innerHTML = `
-            <h3>HIGH RISK</h3>
+            <div class="risk">HIGH RISK</div>
             <p>${alert.message}</p>
             <p class="recommendation">
-                Recommendation: ${alert.recommendation}
+                <strong>Recommendation:</strong> ${alert.recommendation}
             </p>
-            <button class="btn">Acknowledge</button>
+            <button class="btn btn-primary">Acknowledge</button>
         `;
 
         container.prepend(card);

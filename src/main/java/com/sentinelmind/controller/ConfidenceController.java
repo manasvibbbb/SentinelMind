@@ -39,6 +39,7 @@ public class ConfidenceController {
         }
 
         model.addAttribute("confidenceList", confidenceList);
+        model.addAttribute("activePage", "confidences");
         return "confidence";
     }
 

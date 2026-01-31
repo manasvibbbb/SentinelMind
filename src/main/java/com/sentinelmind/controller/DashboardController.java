@@ -1,6 +1,7 @@
 package com.sentinelmind.controller;
 
 import com.sentinelmind.model.BaselineProfile;
+import com.sentinelmind.repository.AlertRepository;
 import com.sentinelmind.repository.BaselineProfileRepository;
 import com.sentinelmind.repository.DepartmentRepository;
 import com.sentinelmind.service.RiskTrendService;
@@ -13,19 +14,30 @@ public class DashboardController {
 
     private final DepartmentRepository departmentRepository;
     private final BaselineProfileRepository baselineRepository;
+    private final AlertRepository alertRepository;
     private final RiskTrendService riskTrendService;
 
     public DashboardController(DepartmentRepository departmentRepository,
                                BaselineProfileRepository baselineRepository,
+                               AlertRepository alertRepository,
                                RiskTrendService riskTrendService) {
         this.departmentRepository = departmentRepository;
         this.baselineRepository = baselineRepository;
+        this.alertRepository = alertRepository;
         this.riskTrendService = riskTrendService;
     }
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
 
+        // 🔹 Active navbar highlight
+        model.addAttribute("activePage", "dashboard");
+
+        // 🔹 KPI counts for dashboard cards
+        model.addAttribute("alertCount", alertRepository.count());
+        model.addAttribute("departmentCount", departmentRepository.count());
+
+        // 🔹 ER risk trend
         String erTrend = departmentRepository.findByName("ER")
                 .map(dept -> {
                     BaselineProfile baseline =
@@ -35,6 +47,7 @@ public class DashboardController {
                 .orElse("UNKNOWN");
 
         model.addAttribute("erTrend", erTrend);
+
         return "dashboard";
     }
 }

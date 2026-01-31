@@ -26,6 +26,7 @@ public class AlertsPageController {
         model.addAttribute("alerts", alerts);
         model.addAttribute("totalAlerts", alerts.size());
         model.addAttribute("highRiskAlerts", highRiskCount);
+        model.addAttribute("activePage", "alerts");
 
         return "alerts";
     }

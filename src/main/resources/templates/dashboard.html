@@ -1,62 +1,81 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>SentinelMind – Operations Dashboard</title>
+    <title>Dashboard – SentinelMind</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <a class="active" href="/dashboard">Dashboard</a>
-    <a href="/risk-trends">Risk Trends</a>
-    <a href="/recommendations">Recommendations</a>
-    <a href="/alerts">Alerts</a>
-    <a href="/charts">Charts</a>
-</div>
+<!-- SHARED NAVBAR -->
+<div th:replace="fragments/navbar :: body"></div>
 
 <div class="container">
 
     <!-- HERO / OVERVIEW -->
-    <div class="card hero">
-        <h1>🧠 SentinelMind</h1>
+    <div class="card header-card">
+        <h1>🧠 SentinelMind Operations Dashboard</h1>
         <p class="subtitle">
-            AI-powered hospital workflow intelligence system.
+            Real-time AI-powered intelligence for hospital workflow monitoring.
         </p>
         <p class="description">
-            SentinelMind continuously analyzes operational signals such as patient inflow,
-            response delays, and staffing levels to detect risks early, explain anomalies,
-            and support real-time clinical decision-making.
+            SentinelMind continuously analyzes patient inflow, response delays,
+            and staffing levels to detect operational risks early and support
+            timely clinical decision-making.
         </p>
     </div>
 
-    <!-- KEY CAPABILITIES -->
+    <!-- KPI METRICS -->
     <div class="grid-3">
 
-        <div class="card feature">
+        <div class="card info-card">
+            <h3>🚨 Active Alerts</h3>
+            <p class="muted">High & medium risk events</p>
+            <h2 th:text="${alertCount != null ? alertCount : 0}">0</h2>
+        </div>
+
+        <div class="card info-card">
+            <h3>🏥 Departments Monitored</h3>
+            <p class="muted">Live operational coverage</p>
+            <h2 th:text="${departmentCount != null ? departmentCount : 0}">0</h2>
+        </div>
+
+        <div class="card info-card">
+            <h3>📊 Risk Status</h3>
+            <p class="muted">Overall hospital condition</p>
+            <span class="confidence-badge MEDIUM">
+                STABLE
+            </span>
+        </div>
+
+    </div>
+
+    <!-- CORE FEATURES -->
+    <div class="grid-3">
+
+        <div class="card">
             <h3>📈 Risk Trend Intelligence</h3>
-            <p>
-                Directional analysis of operational risk across departments
-                using recent workflow patterns.
+            <p class="muted">
+                Directional analysis showing whether departmental
+                operational risk is improving, stable, or increasing.
             </p>
             <a href="/risk-trends" class="link">View Risk Trends →</a>
         </div>
 
-        <div class="card feature">
+        <div class="card">
             <h3>🚨 Real-Time Alerts</h3>
-            <p>
-                Immediate alerts for high-risk situations with
-                explainable reasoning and action guidance.
+            <p class="muted">
+                Immediate notifications for high-risk workflow anomalies
+                with explainable causes and recommended actions.
             </p>
             <a href="/alerts" class="link">View Alerts →</a>
         </div>
 
-        <div class="card feature">
+        <div class="card">
             <h3>🩺 Smart Recommendations</h3>
-            <p>
-                AI-generated operational recommendations to
-                assist doctors and administrators in critical moments.
+            <p class="muted">
+                AI-generated operational guidance to assist doctors
+                and administrators during critical situations.
             </p>
             <a href="/recommendations" class="link">View Recommendations →</a>
         </div>

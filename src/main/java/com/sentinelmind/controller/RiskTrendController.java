@@ -41,6 +41,7 @@ public class RiskTrendController {
         }
 
         model.addAttribute("trends", trends);
+        model.addAttribute("activePage", "risk-trends");
         return "risk-trends";
     }
 
